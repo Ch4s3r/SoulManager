@@ -1,4 +1,4 @@
-package com.evilcorp.SoulManager
+package com.evilcorp.soulmanager
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -26,4 +26,4 @@ hs_err_pid*
 SoulManager.iml
 build/
 gradle/wrapper/gradle-wrapper.properties
-
+/out/

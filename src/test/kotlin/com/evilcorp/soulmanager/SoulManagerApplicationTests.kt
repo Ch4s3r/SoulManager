@@ -1,4 +1,4 @@
-package com.evilcorp.SoulManager
+package com.evilcorp.soulmanager
 
 import org.junit.Test
 import org.junit.runner.RunWith
