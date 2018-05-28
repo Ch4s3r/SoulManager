@@ -19,6 +19,14 @@ class TransactionServiceImpl : TransactionService {
     @Autowired
     lateinit var walletRepository: WalletRepository
 
+    private fun saveValueAbleGood(valueAbleGood: ValueAbleGood) {
+        when (valueAbleGood) {
+            is Bag -> bagRepository.save(valueAbleGood)
+            is Pocket -> pocketRepository.save(valueAbleGood)
+            is Wallet -> walletRepository.save(valueAbleGood)
+        }
+    }
+
     override fun send(from: ValueAbleGood, to: ValueAbleGood, amount: Long) {
         if (withdraw(from, amount)) {
             deposit(to, amount)
@@ -30,11 +38,7 @@ class TransactionServiceImpl : TransactionService {
         return if (from.value >= amount) {
             print("Withdrawing $amount gold from ${from.owner.fullName}'s ${from.name}")
             from.value -= amount
-            when (from) {
-                is Bag -> bagRepository.save(from)
-                is Pocket -> pocketRepository.save(from)
-                is Wallet -> walletRepository.save(from)
-            }
+            saveValueAbleGood(from)
             true
         } else {
             print("Cannot withdraw $amount gold from ${from.owner.fullName}'s ${from.name}. Balance is to low.")
@@ -45,10 +49,6 @@ class TransactionServiceImpl : TransactionService {
     override fun deposit(to: ValueAbleGood, amount: Long) {
         print("Depositing $amount gold from ${to.owner.fullName}'s ${to.name}")
         to.value += amount
-        when (to) {
-            is Bag -> bagRepository.save(to)
-            is Pocket -> pocketRepository.save(to)
-            is Wallet -> walletRepository.save(to)
-        }
+        saveValueAbleGood(to)
     }
 }

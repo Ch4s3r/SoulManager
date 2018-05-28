@@ -6,6 +6,5 @@ import javax.persistence.Entity
 @Entity
 class Pocket(id: Long,
              owner: Soul,
-             value: Long,
-             val color: String)
+             value: Long)
     : ValueAbleGood(id, owner, "pocket", value)
