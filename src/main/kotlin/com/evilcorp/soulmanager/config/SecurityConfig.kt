@@ -12,8 +12,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+//TODO enable later in production
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig {
+
     @Configuration
     class SecurityConfigurerAdapter(val jwtAuthenticationFilter: JwtAuthenticationFilter) : WebSecurityConfigurerAdapter() {
 
@@ -22,14 +24,22 @@ class SecurityConfig {
             return authenticationManager()
         }
 
-
         override fun configure(http: HttpSecurity) {
             http
-                    .requestMatchers().antMatchers("/graphiql", "/graphql").and().authorizeRequests().anyRequest().permitAll()
-                    .anyRequest().authenticated()
+                    .authorizeRequests().antMatchers("/graphiql", "/graphql").permitAll()
+                    //TODO enable later in production
+//                    .anyRequest().denyAll()
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                    .and().exceptionHandling().authenticationEntryPoint({ request, response, authException ->
+//                        response.addHeader("WWW-Autenticate", "Bearer")
+//                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.message)
+//                    })
+//                    .and().exceptionHandling().accessDeniedHandler(AccessDeniedHandler { request, response, accessDeniedException ->
+//                        response.sendError(HttpServletResponse.SC_FORBIDDEN)
+//                    })
                     .and().csrf().disable()
-                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+                    .headers().frameOptions().disable() //for h2
+                    .and().addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
         }
     }
 }

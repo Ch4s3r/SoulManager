@@ -1,8 +1,8 @@
 package com.evilcorp.soulmanager.entity
 
-import com.evilcorp.soulmanager.entity.items.Bag
-import com.evilcorp.soulmanager.entity.items.Pocket
-import com.evilcorp.soulmanager.entity.items.Wallet
+import com.evilcorp.soulmanager.entity.valueablegood.Bag
+import com.evilcorp.soulmanager.entity.valueablegood.Pocket
+import com.evilcorp.soulmanager.entity.valueablegood.Wallet
 import javax.persistence.*
 
 @Entity
@@ -10,14 +10,20 @@ data class User(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long = 0,
         val firstname: String = "",
         val lastname: String = "",
-        val fullname: String = "$firstname $lastname",
-        val username: String = "",
-        val email: String = "",
+        @Column(unique = true) val username: String = "",
+        @Column(unique = true) val email: String = "",
         val password: String = "",
-        @ManyToMany(mappedBy = "users") val roles: MutableList<Role> = mutableListOf(),
-        @OneToMany(mappedBy = "from") val transactionsFrom: List<Transaction> = emptyList(),
-        @OneToMany(mappedBy = "to") val transactionsTo: List<Transaction> = emptyList(),
-        @OneToMany(mappedBy = "owner") val bags: List<Bag> = emptyList(),
-        @OneToMany(mappedBy = "owner") val pockets: List<Pocket> = emptyList(),
-        @OneToMany(mappedBy = "owner") val wallets: List<Wallet> = emptyList()
-)
+        @ManyToMany(fetch = FetchType.EAGER)
+//        @JoinTable(name = "user_roles",
+//                joinColumns = [(JoinColumn(name = "user_id", referencedColumnName = "id"))],
+//                inverseJoinColumns = [(JoinColumn(name = "role_id", referencedColumnName = "id"))])
+        val roles: List<Role> = emptyList(),
+        @OneToMany(mappedBy = "from") val transactionsFrom: MutableList<Transaction> = mutableListOf(),
+        @OneToMany(mappedBy = "to") val transactionsTo: MutableList<Transaction> = mutableListOf(),
+        @OneToMany(mappedBy = "owner") val bags: MutableList<Bag> = mutableListOf(),
+        @OneToMany(mappedBy = "owner") val pockets: MutableList<Pocket> = mutableListOf(),
+        @OneToMany(mappedBy = "owner") val wallets: MutableList<Wallet> = mutableListOf()
+) {
+    val fullname: String
+        get() = "$firstname $lastname"
+}

@@ -1,10 +1,10 @@
 package com.evilcorp.soulmanager.service
 
-import com.evilcorp.soulmanager.entity.items.ValueAbleGood
+import com.evilcorp.soulmanager.entity.valueablegood.ValueAbleGood
 
 
 interface TransactionService {
-    fun send(from: ValueAbleGood, to: ValueAbleGood, amount: Long)
-    fun withdraw(from: ValueAbleGood, amount: Long): Boolean
-    fun deposit(to: ValueAbleGood, amount: Long)
+    fun withdraw(valueAbleGood: ValueAbleGood, amount: Long): Boolean
+    fun deposit(valueAbleGood: ValueAbleGood, amount: Long): Boolean
+    fun send(fromValueAbleGood: ValueAbleGood, toValueAbleGood: ValueAbleGood, amount: Long): Boolean
 }

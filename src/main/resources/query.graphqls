@@ -1,8 +1,14 @@
+type Role {
+    id: ID!
+    name: String!
+}
+
 type User {
     id: ID!
     firstname: String!
     lastname: String!
     username: String!
+    roles: [Role]
 }
 
 input UserInput {
@@ -13,6 +19,12 @@ input UserInput {
     password: String!
 }
 
+type ValueAbleGood {
+    id: ID!
+    owner: User!
+    name: String!
+    value: Long!
+}
 
 type SigninPayload {
     token: String
@@ -31,15 +43,57 @@ type Query {
     #    id
     #  }
     #}
-    listUser(id: ID): User
+    listUser(id: ID!): User
+    #query{
+    #  listMyAccount(valueAbleGoodID:3){
+    #    id
+    #    name
+    #    value
+    #  }
+    #}
+    listMyAccount(valueAbleGoodID: ID!): ValueAbleGood!
+    #query{
+    #  listMyAccounts{
+    #    id
+    #    name
+    #    value
+    #  }
+    #}
+    listMyAccounts: [ValueAbleGood]
 }
 
 type Mutation {
     #mutation {
-    #   createUser(user: {firstname: "kk", lastname: "kk", username: "kk", email: "kk", password: "k"}) {
-    #       id
+    #   signup(user: {firstname: "Vixek", lastname: "Fizzdigger", username: "fizzi", email: "goblin3@evilcorp.com", password: "pw"}) {
+    #    token
+    #    user {
+    #      id
+    #    }
     #   }
     #}
-    createUser(user: UserInput): User!
-    #    signinUser(auth: AuthData): SigninPayload
+    signup(user: UserInput!): SigninPayload
+    #mutation{
+    #  signin(email:"evilbitch@evilcorp.com", password:"pw") {
+    #    token
+    #    user{
+    #    	roles {
+    #    	  name
+    #    	}
+    #    }
+    #  }
+    #}
+    signin(email: String!, password: String!): SigninPayload
+    #bankelinis pocket:
+    #mutation{
+    #  withdraw(valueAbleGoodID: 3, amount: 11)
+    #}
+    withdraw(valueAbleGoodID: ID!, amount: Long!): Boolean
+    #mutation{
+    #  deposit(valueAbleGoodID: 3, amount: 10)
+    #}
+    deposit(valueAbleGoodID: ID!, amount: Long!): Boolean
+    #mutation{
+    #	send(fromValueAbleGoodID: 4, toValueAbleGoodID: 3, amount: 32)
+    #}
+    send(fromValueAbleGoodID: ID!, toValueAbleGoodID: ID!, amount: Long!): Boolean
 }
