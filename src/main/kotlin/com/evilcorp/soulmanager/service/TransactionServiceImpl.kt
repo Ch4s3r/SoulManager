@@ -7,17 +7,13 @@ import com.evilcorp.soulmanager.entity.items.Wallet
 import com.evilcorp.soulmanager.repository.items.BagRepository
 import com.evilcorp.soulmanager.repository.items.PocketRepository
 import com.evilcorp.soulmanager.repository.items.WalletRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class TransactionServiceImpl : TransactionService {
-    @Autowired
-    lateinit var bagRepository: BagRepository
-    @Autowired
-    lateinit var pocketRepository: PocketRepository
-    @Autowired
-    lateinit var walletRepository: WalletRepository
+class TransactionServiceImpl(
+        val bagRepository: BagRepository,
+        val pocketRepository: PocketRepository,
+        val walletRepository: WalletRepository) : TransactionService {
 
     private fun saveValueAbleGood(valueAbleGood: ValueAbleGood) {
         when (valueAbleGood) {
@@ -36,18 +32,18 @@ class TransactionServiceImpl : TransactionService {
 
     override fun withdraw(from: ValueAbleGood, amount: Long): Boolean {
         return if (from.value >= amount) {
-            print("Withdrawing $amount gold from ${from.owner.fullName}'s ${from.name}")
+            print("Withdrawing $amount gold from ${from.owner.fullname}'s ${from.name}")
             from.value -= amount
             saveValueAbleGood(from)
             true
         } else {
-            print("Cannot withdraw $amount gold from ${from.owner.fullName}'s ${from.name}. Balance is to low.")
+            print("Cannot withdraw $amount gold from ${from.owner.fullname}'s ${from.name}. Balance is to low.")
             false
         }
     }
 
     override fun deposit(to: ValueAbleGood, amount: Long) {
-        print("Depositing $amount gold from ${to.owner.fullName}'s ${to.name}")
+        print("Depositing $amount gold from ${to.owner.fullname}'s ${to.name}")
         to.value += amount
         saveValueAbleGood(to)
     }

@@ -1,0 +1,45 @@
+type User {
+    id: ID!
+    firstname: String!
+    lastname: String!
+    username: String!
+}
+
+input UserInput {
+    firstname: String!
+    lastname: String!
+    username: String!
+    email: String!
+    password: String!
+}
+
+
+type SigninPayload {
+    token: String
+    user: User
+}
+
+type Query {
+    #query{
+    #  listUsers {
+    #    id
+    #  }
+    #}
+    listUsers: [User]!
+    #query{
+    #  listUser(id:1) {
+    #    id
+    #  }
+    #}
+    listUser(id: ID): User
+}
+
+type Mutation {
+    #mutation {
+    #   createUser(user: {firstname: "kk", lastname: "kk", username: "kk", email: "kk", password: "k"}) {
+    #       id
+    #   }
+    #}
+    createUser(user: UserInput): User!
+    #    signinUser(auth: AuthData): SigninPayload
+}

@@ -1,11 +1,11 @@
 package com.evilcorp.soulmanager.entity.items
 
-import com.evilcorp.soulmanager.entity.Soul
+import com.evilcorp.soulmanager.entity.User
 import javax.persistence.Entity
 
 @Entity
 class Wallet(id: Long,
-             owner: Soul,
+             owner: User,
              value: Long,
              val color: String,
              val weight: Long)
