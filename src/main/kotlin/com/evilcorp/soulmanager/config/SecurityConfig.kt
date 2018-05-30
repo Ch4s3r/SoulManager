@@ -28,7 +28,7 @@ class SecurityConfig {
             http
                     .authorizeRequests().antMatchers("/graphiql", "/graphql").permitAll()
                     //TODO enable later in production
-//                    .anyRequest().denyAll()
+                    .anyRequest().denyAll()
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                    .and().exceptionHandling().authenticationEntryPoint({ request, response, authException ->
 //                        response.addHeader("WWW-Autenticate", "Bearer")
