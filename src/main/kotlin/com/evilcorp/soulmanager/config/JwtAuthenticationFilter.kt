@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class JwtAuthenticationFilter(val jwtUtil: JwtUtil) : OncePerRequestFilter() {
 
-
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         val authorizationHeader: String = request.getHeader("Authorization") ?: ""
         if (authorizationHeader.startsWith("Bearer ")) {
